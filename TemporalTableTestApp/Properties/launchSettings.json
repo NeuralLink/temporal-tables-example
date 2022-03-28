@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TemporalTableTestApp": {
+      "commandName": "Project",
+      "sqlDebugging": true
+    }
+  }
+}

@@ -10,5 +10,17 @@
         {
             optionsBuilder.UseSqlServer(@"Server=localhost;Database=TemporalTableTest;Trusted_Connection=True;");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Event>()
+                .ToTable("Event", b => b.IsTemporal(
+                    b =>
+                    {
+                        b.HasPeriodStart("SysStart");
+                        b.HasPeriodEnd("SysEnd");
+                        b.UseHistoryTable("Event_HISTORY");
+                    }));
+        }
     }
 }

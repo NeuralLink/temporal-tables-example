@@ -2,6 +2,7 @@
 {
     using AutoBogus;
     using Bogus;
+    using Microsoft.EntityFrameworkCore;
 
     public class EventEngine
     {
@@ -21,6 +22,24 @@
             {
                 this.CreateEvent();
             }
+        }
+
+        public void TemporalQueryExamples()
+        {
+            // TemporalAll returns all historical rows for a given entity
+            var temporalAll = this.Db.Events.TemporalAll().Where(x => x.Id == 1).ToList();
+
+            // TemporalAsOf returns historical data that was current at the specified time
+            var temporalAsOf = this.Db.Events.TemporalAsOf(new DateTime(2022, 4, 2)).Where(x => x.Id == 1).ToList();
+
+            // TemporalFromTo returns all historical rows that were valid between two given times, where the upper boundary is exclusive
+            var temporalFromTo = this.Db.Events.TemporalFromTo(new DateTime(2022, 3, 27), new DateTime(2022, 3, 30)).Where(x => x.Id == 1).ToList();
+
+            // TemporalBetween same as TemporalFromTo but this time, the upper boundary is inclusive
+            var temporalBetween = this.Db.Events.TemporalBetween(new DateTime(2022, 3, 27), new DateTime(2022, 3, 30)).Where(x => x.Id == 1).ToList();
+
+            // TemporalContainedIn returns all rows that both became active, and inactive between two instants in time
+            var temporalContainedIn = this.Db.Events.TemporalContainedIn(new DateTime(2022, 3, 27), new DateTime(2022, 4, 6)).Where(x => x.Id == 1).ToList();
         }
 
         public void UpdateRandomEvent()

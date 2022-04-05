@@ -21,3 +21,5 @@ do
         eventEngine.UpdateRandomEvent();
     }
 } while (cki.Key != ConsoleKey.Escape);
+
+eventEngine.TemporalQueryExamples();
